@@ -1,3 +1,5 @@
+import re
+
 with open('phonebook.csv', encoding='utf8') as book:
     data = []
 
@@ -30,7 +32,17 @@ with open('phonebook.csv', encoding='utf8') as book:
             surname = line[2]
         organization = line[3]
         position = line[4]
+
+
+
+
+
         phone_raw = line[5].replace(' ','').replace('-', '').replace('+', '').replace('(', '').replace(')', '')
+
+        phone_zero = "(8|\+7)?(\s)*(\(\d+\))(\s)*(\d+)([-\s])(\d+)([-\s])(\d+)"
+        phone_two = re.findall(phone_zero, phone_raw)
+        phone_raw = re.sub(phone_zero, r"+7\3\5-\7-\9", phone_raw)
+
         if 'до' in phone_raw:
             phone = '+7(' + phone_raw[1:4] + ')' + phone_raw[4:7] + '-' + phone_raw[7:9] + '-' + phone_raw[9:11] + ' доб.' + phone_raw[-4:-1] + phone_raw[-1]
         elif phone_raw == 'phone':
